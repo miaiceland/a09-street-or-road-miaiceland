@@ -1,0 +1,86 @@
+---
+title: "Activity: Street or Road?"
+author: "YOUR NAME HERE"
+output: html_notebook
+---
+
+## Load in the data
+
+```{r}
+#load libraries 
+
+#load in the data here 
+# we will only be using the "street-addresses.csv" file from the text
+
+
+
+```
+
+## Recreate Solved Example using `sample(50)`
+
+```{r}
+
+
+```
+
+## Recreate Soved Example using the entire `Address` data set
+
+```{r}
+
+
+```
+
+#### Additional Question: How many addresses are a PO BOX (including NCSU BOX)? 
+
+```{r}
+
+
+```
+
+My answer here...... 
+
+
+## Back to the Streets: Your Turn
+
+#### Part 1: Explain (in english) each line of the following code chunk
+
+```{r}
+pattern <- "(ST|RD|ROAD)"
+LeftOvers <-
+  Addresses %>% 
+  filter( !grepl(pattern, address),
+          !grepl("\\sAPT|UNIT\\s[\\d]+$", address),
+          !grepl(" BOX ", address)
+          )
+```
+
+My answer here.......
+
+#### Part 2: Implement your method on the entire `Addresses` data set. Explain how your code works line by line.
+
+```{r}
+
+
+
+```
+
+My answer here.......
+
+#### Additional Question 1: Present your result from part 2 by providing a table in descending order of popularity for the street name endings you found
+
+```{r}
+
+
+```
+
+#### Additional Question 2: Present your result by using ggplot to a bar chart in descending order of popularity for the street name endings you found previously.
+
+Note: make sure your order street names according to popularity, not alphabetically.
+
+```{r}
+
+```
+
+#### Additional Question 3: Comment on any patterns you see
+
+My answer here.......
