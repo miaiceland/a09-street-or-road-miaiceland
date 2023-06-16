@@ -1,6 +1,6 @@
 ---
 title: "Activity: Street or Road?"
-author: "YOUR NAME HERE"
+author: "Mia Iceland"
 output: html_notebook
 ---
 
@@ -8,10 +8,12 @@ output: html_notebook
 
 ```{r}
 #load libraries 
+library(tidyverse)
 
 #load in the data here 
 # we will only be using the "street-addresses.csv" file from the text
 
+Address <- read_csv("https://mdbeckman.github.io/dcSupplement/data/street-addresses.csv")
 
 
 ```
@@ -20,6 +22,17 @@ output: html_notebook
 
 ```{r}
 
+Sample <- 
+  DataTable %>%
+  sample_n(size = 50)
+
+Matches <- 
+  Sample %>%
+  filter(grepl(pattern = "PO", address))
+
+Dont <- 
+  Sample %>%
+  filter( !grepl(pattern = "PO", address))
 
 ```
 
@@ -27,6 +40,15 @@ output: html_notebook
 
 ```{r}
 
+pattern <- "BOX\\s+(\\d+)"
+
+Matches1 <- 
+  Address %>% 
+  filter(grepl(pattern, address))
+
+Dont1 <-
+  Address %>%
+  filter( !grepl(pattern, address))
 
 ```
 
@@ -34,10 +56,12 @@ output: html_notebook
 
 ```{r}
 
+Matches1 %>%
+  summarise(count = n())
 
 ```
 
-My answer here...... 
+There are 111,000 addresses that are a PO BOX. 
 
 
 ## Back to the Streets: Your Turn
@@ -54,7 +78,14 @@ LeftOvers <-
           )
 ```
 
-My answer here.......
+First Line: is creating a new variable "pattern" and within it identifies the pattern that we are trying to extract. It is grouping all cases that have "ST", "RD", or "ROAD".
+Second Line: creating a new data table and labeling it.
+Third Line: calling an existing table.
+Forth Line: the filter subsets the "Addresses" data set. The conditions within filter():
+-do not include cases with the "pattern" in the address column (do not include "ST", "RD", or "ROAD")
+-do not include cases with  white space before and after the characters "APT" or "UNIT", followed by any number of digits, with those digits ending the case in the address column
+-do not include cases with the characters " BOX" in the address column
+
 
 #### Part 2: Implement your method on the entire `Addresses` data set. Explain how your code works line by line.
 
