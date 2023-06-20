@@ -71,7 +71,7 @@ There are 111,000 addresses that are a PO BOX.
 ```{r}
 pattern <- "(ST|RD|ROAD)"
 LeftOvers <-
-  Addresses %>% 
+  Address %>% 
   filter( !grepl(pattern, address),
           !grepl("\\sAPT|UNIT\\s[\\d]+$", address),
           !grepl(" BOX ", address)
@@ -83,24 +83,40 @@ Second Line: creating a new data table and labeling it.
 Third Line: calling an existing table.
 Forth Line: the filter subsets the "Addresses" data set. The conditions within filter():
 -do not include cases with the "pattern" in the address column (do not include "ST", "RD", or "ROAD")
--do not include cases with  white space before and after the characters "APT" or "UNIT", followed by any number of digits, with those digits ending the case in the address column
--do not include cases with the characters " BOX" in the address column
+-do not include cases with  white space before and after the characters "APT" or "UNIT". Following this, do not include cases with any number of digits, with those digits ending the case in the address column. (Do not include cases when APT or UNIT is followed by any number of digits).
+-do not include cases with the characters " BOX " in the address column.
 
 
 #### Part 2: Implement your method on the entire `Addresses` data set. Explain how your code works line by line.
 
 ```{r}
 
+pattern1 <- "(ST|STREET|ROAD|CIR|PL|WAY|LN|COURT|TOWN|PATH|RIDGE|SQUARE|DRIVE|HILLS|COVE|VALLEY|TRAIL|LOOP|TR|PKWY|HOUSE|HOME|TRL|TERRACE|TER|COLLEGE|RUN|CV|BLVD|POINT|HWY|HALL|UNIV|UNIVERSITY|BLV|AVE|AVENUE|DR|DRIVE|POINT|HWY|HALL|UNIV|UNIVERSITY|BOX|CT|RD|LANE|PO BOX)"
 
+LeftOvers1 <-
+  Address %>% 
+  filter( !grepl(pattern1, address))
 
 ```
 
-My answer here.......
+I created a pattern to account for different types of address endings. I, then, filtered out those address patterns out of my data until I am left with miscellaneous addresses that have no ending pattern. 
 
 #### Additional Question 1: Present your result from part 2 by providing a table in descending order of popularity for the street name endings you found
 
 ```{r}
+StreetEndings <-
+  Address %>% 
+    filter( grepl(pattern1, address)) %>%
+    mutate(StreetEnding= str_extract(address, pattern1)) %>%
+    group_by(StreetEnding) %>%
+    summarise(count = n()) %>%
+    arrange(desc(count))
+    
+    
 
+head(StreetEndings)
+    
+    
 
 ```
 
@@ -109,9 +125,12 @@ My answer here.......
 Note: make sure your order street names according to popularity, not alphabetically.
 
 ```{r}
-
+StreetEndings %>%
+  ggplot(aes(x = count, y= StreetEnding)) + 
+  geom_point()
 ```
 
 #### Additional Question 3: Comment on any patterns you see
 
-My answer here.......
+I notice that "PO BOX" and "BOX" are the most popular street endings. The less common but still noticibly more popular road endings are "ST", "RD", and "DR". 
+
